@@ -16,7 +16,7 @@ class ImageCard extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: Row(children: [
                   Icon(Icons.layers,
-                      color: image.isActive ? Colors.white70 : Colors.pink,
+                      color: image.isActive ? Colors.pink : Colors.white70,
                       size: 40),
                   const SizedBox(width: 20),
                   Column(
