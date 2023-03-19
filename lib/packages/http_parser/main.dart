@@ -1,4 +1,5 @@
 import 'package:axolotl/packages/http_parser/methods.enum.dart';
+import 'package:axolotl/packages/http_parser/utils/bytes.dart';
 import 'package:uuid/uuid.dart';
 
 class HTTPParser {
@@ -46,7 +47,9 @@ class HTTPParser {
         headers: headers, body: body);
   }
 
-  final http = 'HTTP/1.0';
+  final http = 'HTTP/1.1';
+  final host = 'axolotl';
+  final version = '/v4.0.0';
   final Methods method;
   final String url;
   final String body;
@@ -59,25 +62,35 @@ class HTTPParser {
   }
 
   String build() {
+    headers['Host'] = host;
     final stringBuilder = StringBuffer();
-    stringBuilder.write([method.name, url, http].join(' '));
-    stringBuilder.write('\x0A');
+    stringBuilder.write([method.name, '$version$url', http].join(' '));
+    stringBuilder.write(LF);
     final headersStrings = headers.entries
         .map<String>((entry) => '${entry.key}: ${entry.value}')
         .toList();
     if (headersStrings.isNotEmpty) {
-      stringBuilder.write(headersStrings.join('\x0A'));
+      stringBuilder.write(headersStrings.join(LF));
     }
     if (body.isNotEmpty) {
-      stringBuilder.write('\x0A\x0A');
+      stringBuilder.write('$LF$LF');
       stringBuilder.write(body);
     }
-    stringBuilder.write('\x0A\x0A');
+    stringBuilder.write('$LF$LF');
     return stringBuilder.toString();
   }
 
   @override
   String toString() {
     return build();
+  }
+
+  HTTPParser copyWith(
+      {Methods? method,
+      String? url,
+      String? body,
+      Map<String, String>? headers}) {
+    return HTTPParser(method ?? this.method, url ?? this.url,
+        body: body ?? this.body, headers: headers ?? this.headers);
   }
 }
