@@ -14,7 +14,7 @@ class ImagesService {
   final PodmanApi _podmanApi;
   final EventHandler _eventHandler = EventHandlerSingleton.getInstance();
 
-  Future<List<Image>> listImages() async {
+  Future<List<Image>> list() async {
     final completer = Completer<List<Image>>();
     final request = HTTPParser.get('/images/json');
     _eventHandler.add(request.headers['X-Reference-Id']!, (response) {
