@@ -15,7 +15,7 @@ class ImagesScreenCubit extends Cubit<ImagesScreenState> {
   final podmanApi = PodmanApiSingleton.getInstance();
 
   Future<void> loadImages() async {
-    final images = await podmanApi.imagesService.listImages();
+    final images = await podmanApi.imagesService.list();
     emit(ImagesScreenGetImages(images));
   }
 }
